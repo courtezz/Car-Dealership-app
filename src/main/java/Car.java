@@ -62,19 +62,19 @@ String model;
     }
 
     public int year() {
-        return 0;
+        return year;
     }
 
     public String make() {
-        return null;
+        return make;
     }
 
     public String model() {
-        return null;
+        return model;
     }
 
     public double price() {
-        return 0;
+        return price;
     }
 
     public String carType() {

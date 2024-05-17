@@ -44,6 +44,7 @@ public class Dealership {
     public List<Car> getCarByColor(String color) {
         List<Car> result = new ArrayList<>();
         for (Car car : inventory) {
+            assert car.color() != null;
             if (car.color().equalsIgnoreCase(color)) {
                 result.add(car);
             }
@@ -80,6 +81,32 @@ public class Dealership {
     public void removeCar(Car car) {
         inventory.remove(car);
     }
+    public void sellOrLeaseVehicle(Car car, String customerName, boolean isLease) {
+        if (isLease) {
+            leaseVehicle(car, customerName);
+        } else {
+            sellVehicle(car, customerName);
+        }
+    }
 
-
+    private void sellVehicle(Car car, String customerName) {
+        // Sale calculation logic
+        // Display sale contract details
+        System.out.println("Sale contract details:");
+        // Add sale contract to records or file
+    }
+    private LeaseContract leaseVehicle(Car car, String customerName) {
+        int currentYear = 0;
+        if (car.getYear() > (currentYear - 3)) {
+            System.out.println("Cannot lease a vehicle over 3 years old.");
+            return null;
+        } // Existing code
+        // Lease calculation logic
+        // For simplicity, assume monthly lease price is 1/36th of the car's price (3-year lease)
+        double monthlyLeasePrice = car.getPrice() / 36;
+        return new LeaseContract(car, customerName, 36, monthlyLeasePrice);
+    }
 }
+
+
+

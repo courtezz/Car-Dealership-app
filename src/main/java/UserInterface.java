@@ -42,40 +42,49 @@ public class UserInterface {
         }
 
 
-        System.out.println("=== Welcome to the Car Dealership Application ===");
-        System.out.println("1. Get cars by price range");
-        System.out.println("2. Get cars by make and model");
-        System.out.println("3. Get cars by year range");
-        System.out.println("4. Get cars by color");
-        System.out.println("5. Get cars by mileage range");
-        System.out.println("6. Get cars by car type");
-        System.out.println("7. Get all cars");
-        System.out.println("8. Add a car");
-        System.out.println("9. Remove a car");
-        System.out.println("10. Exit");
-        System.out.println("Please select an option by number ");
+        System.out.println("=== Welcome to the Car Dealership Application===");
+        while (true) {
+            System.out.println("1. Get cars by price range");
+            System.out.println("2. Get cars by make and model");
+            System.out.println("3. Get cars by year range");
+            System.out.println("4. Get cars by color");
+            System.out.println("5. Get cars by mileage range");
+            System.out.println("6. Get cars by car type");
+            System.out.println("7. Get all cars");
+            System.out.println("8. Add a car");
+            System.out.println("9. Remove a car");
+            System.out.println("10. Exit");
+            // Existing menu options
+            System.out.println("11. Sell/Lease a vehicle");
+            // Existing menu options
+            System.out.println("Please select an option by number ");
 
 
-        int choice = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
 
-        switch (choice) {
-            case 1 -> processGetByPriceRequest();
-            case 2 -> processGetByMakeModelRequest();
-            case 3 -> processGetByYearRequest();
-            case 4 -> processGetByColorRequest();
-            case 5 -> processGetByMileageRequest();
-            case 6 -> processGetByCarTypeRequest();
-            case 7 -> processGetByAllCarRequest();
-            case 8 -> processAddCarRequest();
-            case 9 -> processRemoveCarRequest();
-            case 10 -> {
-                System.out.println("Exiting program...");
-                System.exit(0);
+            switch (choice) {
+                case 1 -> processGetByPriceRequest();
+                case 2 -> processGetByMakeModelRequest();
+                case 3 -> processGetByYearRequest();
+                case 4 -> processGetByColorRequest();
+                case 5 -> processGetByMileageRequest();
+                case 6 -> processGetByCarTypeRequest();
+                case 7 -> processGetByAllCarRequest();
+                case 8 -> processAddCarRequest();
+                case 9 -> processRemoveCarRequest();
+                case 10 -> {
+                }
+                case 11 -> {
+                    processSellOrLeaseRequest(dealership, scanner);
+                    {
+                        System.out.println("Exiting program...");
+                        System.exit(0);
+                    }
+                }
+                default -> System.out.println("Invalid choice. Please enter a valid option.");
             }
-            default -> System.out.println("Invalid choice. Please enter a valid option.");
         }
-
 
     }
 
@@ -178,6 +187,7 @@ public class UserInterface {
         }
 
         System.out.println("No car found with VIN " + vin);
+
     }
 
     private static void displayCars(List<Car> cars) {
@@ -194,6 +204,32 @@ public class UserInterface {
     public static void setDealership(Dealership dealership) {
         UserInterface.dealership = dealership;
     }
+    private static void processSellOrLeaseRequest(Dealership dealership, Scanner scanner) {
+        System.out.println("Enter VIN of the vehicle to sell/lease: ");
+        int vin = scanner.nextInt();
+        Car car = findCarByVIN(dealership, vin);
+        if (car != null) {
+            System.out.print("Enter customer name: ");
+            String customerName = scanner.next();
+            System.out.print("Do you want to lease this vehicle? (true/false): ");
+            boolean isLease = scanner.nextBoolean();
+            dealership.sellOrLeaseVehicle(car, customerName, isLease);
+        } else {
+            System.out.println("No car found with VIN " + vin);
+        }
+    }
+    private static Car findCarByVIN(Dealership dealership, int vin) {
+        List<Car> cars = dealership.getAllCars();
+        for (Car car : cars) {
+            if (car.getVin() == vin) {
+                return car;
+            }
+        }
+        return null;
+    }
+
+
+
 }
 
 
